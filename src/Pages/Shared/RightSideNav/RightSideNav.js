@@ -6,13 +6,29 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Carousel from 'react-bootstrap/Carousel';
 import brand1 from '../../../assets/brands/Brand1.png';
 import brand2 from '../../../assets/brands/Brand2.png';
+import { useContext } from 'react';
+import { AuthContext } from '../../../contexts/AuthProvider/AuthProvider';
+import { GoogleAuthProvider } from 'firebase/auth';
 
 
 const RightSideNav = () => {
+      const { providerLogin } = useContext(AuthContext);
+
+      const googleProvider = new GoogleAuthProvider();
+
+      const handleGoogleSignIn = () => {
+
+            providerLogin(googleProvider)
+                  .then(result => {
+                        const user = result.user;
+                        console.log(user);
+                  })
+                  .catch(error => console.error(error))
+      }
       return (
             <div>
                   <ButtonGroup vertical>
-                        <Button className='mb-2' variant="outline-primary"><FaGoogle /> Log In With Google</Button>
+                        <Button onClick={handleGoogleSignIn} className='mb-2' variant="outline-primary"><FaGoogle /> Log In With Google</Button>
                         <Button variant="outline-dark"><FaGithub /> Log In With GitHub</Button>
                   </ButtonGroup>
                   <div className='mt-4'>
